@@ -1,5 +1,4 @@
 import React from 'react'
-import { Container } from '@mui/material'
 import Header from './Header'
 
 interface MainLayoutProps {
@@ -8,12 +7,10 @@ interface MainLayoutProps {
 
 const MainLayout: React.FC<MainLayoutProps> = ({ children }) => {
     return (
-        <>
+        <div className="min-h-screen">
             <Header />
-            <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-                {children}
-            </Container>
-        </>
+            {children}
+        </div>
     )
 }
 

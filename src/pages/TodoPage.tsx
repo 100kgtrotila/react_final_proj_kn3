@@ -1,5 +1,5 @@
 import React, { useMemo, useCallback } from 'react'
-import { Typography, Box, Stack, Divider, Alert } from '@mui/material'
+import { Link } from 'react-router-dom'
 import { useAppSelector, useAppDispatch } from '../app/hooks'
 import { toggleTodo, deleteTodo, editTodo } from '../features/todos/todosSlice'
 import TodoList from '../features/todos/TodoList'
@@ -10,7 +10,6 @@ import TodoStats from '../features/todos/TodoStats'
 
 const TodoPage: React.FC = () => {
     const dispatch = useAppDispatch()
-
     const allTodos = useAppSelector(state => state.todos.items)
     const searchTerm = useAppSelector(state => state.todos.searchTerm)
     const currentPage = useAppSelector(state => state.todos.currentPage)
@@ -44,37 +43,63 @@ const TodoPage: React.FC = () => {
     }, [filteredTodos, currentPage, limitPerPage])
 
     return (
-        <Box sx={{ maxWidth: 800, mx: 'auto', p: 3 }}>
-            <Stack spacing={3}>
-                <Typography variant="h3">
-                    Todo List
-                </Typography>
+        <main className="container-custom pt-24 pb-16">
+            <Link
+                to="/labs"
+                className="mb-8 inline-flex items-center text-sm text-slate-600 transition-colors hover:text-slate-900 dark:text-neutral-400 dark:hover:text-neutral-200"
+            >
+                <svg className="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Назад до Labs
+            </Link>
 
-                {allTodos.length === 0 && (
-                    <Alert severity="info">
-                        Welcome! Start by adding your first task below.
-                    </Alert>
-                )}
+            <div className="mb-8 flex items-center gap-4">
+                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-green-500 to-emerald-500 text-3xl">
+                    ✅
+                </div>
+                <div>
+                    <h1 className="heading-lg">Todo List Application</h1>
+                    <p className="text-muted">Redux State Management & CRUD операції</p>
+                </div>
+            </div>
 
-                <TodoForm />
+            {allTodos.length === 0 && (
+                <div className="card mb-8 border-blue-200 bg-blue-50 dark:border-blue-900 dark:bg-blue-900/20">
+                    <p className="text-blue-700 dark:text-blue-300">
+                        👋 Welcome! Start by adding your first task below.
+                    </p>
+                </div>
+            )}
 
-                <Divider />
-
-                {allTodos.length > 0 && (
-                    <>
+            {allTodos.length > 0 && (
+                <>
+                    <TodoStats />
+                    <div className="mt-8">
                         <Search />
-                        <TodoStats />
-                        <TodoList
-                            todos={paginatedTodos}
-                            onToggle={handleToggle}
-                            onDelete={handleDelete}
-                            onEdit={handleEdit}
-                        />
-                        <Pagination totalTodos={filteredTodos.length} />
-                    </>
-                )}
-            </Stack>
-        </Box>
+                    </div>
+                </>
+            )}
+
+            <div className="mt-8">
+                <TodoForm />
+            </div>
+
+            <div className="mt-8">
+                <TodoList
+                    todos={paginatedTodos}
+                    onToggle={handleToggle}
+                    onDelete={handleDelete}
+                    onEdit={handleEdit}
+                />
+            </div>
+
+            {filteredTodos.length > 0 && (
+                <div className="mt-8">
+                    <Pagination totalTodos={filteredTodos.length} />
+                </div>
+            )}
+        </main>
     )
 }
 

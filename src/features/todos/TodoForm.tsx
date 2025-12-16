@@ -1,5 +1,4 @@
 import React, { useState } from 'react'
-import { TextField, Button, Box } from '@mui/material'
 import { useAppDispatch } from '../../app/hooks'
 import { addTodo } from './todosSlice'
 
@@ -16,19 +15,21 @@ const TodoForm: React.FC = () => {
     }
 
     return (
-        <Box component="form" onSubmit={handleSubmit} sx={{ display: 'flex', gap: 1, mb: 2 }}>
-            <TextField
-                fullWidth
+        <form onSubmit={handleSubmit} className="flex gap-3">
+            <input
+                type="text"
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
                 placeholder="Add a new task..."
-                variant="outlined"
-                size="medium"
+                className="flex-1 rounded-xl border-2 border-slate-300 bg-white px-4 py-3 transition-all focus:border-slate-500 focus:outline-none focus:ring-4 focus:ring-slate-500/20 dark:border-neutral-700 dark:bg-neutral-900"
             />
-            <Button type="submit" variant="contained" size="large">
-                Add
-            </Button>
-        </Box>
+            <button
+                type="submit"
+                className="btn btn-primary whitespace-nowrap px-8"
+            >
+                Add Task
+            </button>
+        </form>
     )
 }
 

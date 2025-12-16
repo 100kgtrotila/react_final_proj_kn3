@@ -2,32 +2,29 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { Provider } from 'react-redux'
 import { BrowserRouter } from 'react-router-dom'
-import { ThemeProvider } from '@mui/material/styles'
-import CssBaseline from '@mui/material/CssBaseline'
-import { store } from './app/store'
 import App from './App'
-import { useAppSelector } from './app/hooks'
-import { selectThemeMode } from './features/theme/themeSlice'
-import { getTheme } from './shared/ui/theme'
+import { store } from './app/store'
+import './index.css'
 
-const ThemedApp = () => {
-    const mode = useAppSelector(selectThemeMode)
-    const theme = React.useMemo(() => getTheme(mode), [mode])
+function initTheme() {
+    const theme = localStorage.getItem('theme') ||
+        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
 
-    return (
-        <ThemeProvider theme={theme}>
-            <CssBaseline />
-            <App />
-        </ThemeProvider>
-    )
+    if (theme === 'dark') {
+        document.documentElement.classList.add('dark')
+    } else {
+        document.documentElement.classList.remove('dark')
+    }
 }
+
+initTheme()
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <React.StrictMode>
         <Provider store={store}>
             <BrowserRouter>
-                <ThemedApp />
+                <App />
             </BrowserRouter>
         </Provider>
-    </React.StrictMode>,
+    </React.StrictMode>
 )
