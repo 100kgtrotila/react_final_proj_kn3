@@ -7,14 +7,16 @@ import { store } from './app/store'
 import './index.css'
 
 function initTheme() {
-    const theme = localStorage.getItem('theme') ||
-        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')
+    const stored = localStorage.getItem('theme')
+    const theme = stored || 'dark'
 
     if (theme === 'dark') {
         document.documentElement.classList.add('dark')
     } else {
         document.documentElement.classList.remove('dark')
     }
+
+    localStorage.setItem('theme', theme)
 }
 
 initTheme()

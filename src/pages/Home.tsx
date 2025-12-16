@@ -11,25 +11,19 @@ const Home: React.FC = () => {
         <main className="mx-auto max-w-6xl px-6 sm:px-8 md:px-10">
             <section id="about-main" className="pb-12 pt-24 md:pb-16">
                 <div className="container-custom">
-                    <h1 className="heading-xl mb-8">Про мене</h1>
+                    <h1 className="heading-xl mb-8">About mе</h1>
 
                     <div className="grid grid-cols-1 gap-12 md:grid-cols-3">
                         <div className="space-y-6 text-lg leading-relaxed text-slate-700 md:col-span-2 dark:text-neutral-400">
                             <p>
-                <span className="font-medium text-slate-900 dark:text-neutral-100">
-                  Привіт! Я Данило.
-                </span>{' '}
-                                Я студент спеціальності Комп'ютерні науки, захоплений розробкою
-                                веб-додатків та ігор з використанням сучасних технологій.
+                                <span className="font-medium text-slate-900 dark:text-neutral-100">
+                                  Hello, I'm Danylo Marynych.
+                                </span>{' '}
                             </p>
                             <p>
-                                Мій підхід зосереджений на мінімалізмі та чіткості. Мені подобається
-                                створювати досвід, який поважає увагу користувача, поєднуючи чисту
-                                естетику з надійною функціональністю.
-                            </p>
-                            <p>
-                                Коли я не кодую, ви можете знайти мене за дослідженням нових технологічних
-                                стеків або створенням музики.
+                                I am a Backend Developer and Computer Science student driven by minimalism and clarity.
+                                My goal is to build efficient, scalable systems without unnecessary complexity.
+                                I value clean architecture and pragmatic solutions.
                             </p>
                         </div>
 
@@ -55,11 +49,11 @@ const Home: React.FC = () => {
                                         />
                                     </svg>
                                     <h3 className="text-xs font-semibold uppercase tracking-wider">
-                                        Локація
+                                        Location
                                     </h3>
                                 </div>
                                 <p className="text-base font-medium text-slate-900 dark:text-neutral-200">
-                                    Україна
+                                    Ukraine, Rivne
                                 </p>
                             </div>
 
@@ -81,35 +75,11 @@ const Home: React.FC = () => {
                                         />
                                     </svg>
                                     <h3 className="text-xs font-semibold uppercase tracking-wider">
-                                        Освіта
+                                        Education
                                     </h3>
                                 </div>
                                 <p className="text-base font-medium text-slate-900 dark:text-neutral-200">
-                                    Група КН-3
-                                </p>
-                            </div>
-
-                            <div>
-                                <div className="mb-2 flex items-center gap-2 text-slate-500 dark:text-neutral-500">
-                                    <svg
-                                        className="size-4"
-                                        fill="none"
-                                        stroke="currentColor"
-                                        strokeWidth="2"
-                                        viewBox="0 0 24 24"
-                                    >
-                                        <path
-                                            strokeLinecap="round"
-                                            strokeLinejoin="round"
-                                            d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
-                                        />
-                                    </svg>
-                                    <h3 className="text-xs font-semibold uppercase tracking-wider">
-                                        Статус
-                                    </h3>
-                                </div>
-                                <p className="text-base font-medium text-slate-900 dark:text-neutral-200">
-                                    Відкритий до проєктів
+                                    The National University of Ostroh Academy, Computer Science
                                 </p>
                             </div>
                         </div>
@@ -120,10 +90,6 @@ const Home: React.FC = () => {
             <div className="container-custom section-padding">
                 <section id="skills">
                     <h2 className="heading-lg">Tech Stack</h2>
-                    <p className="mt-1 text-muted">
-                        Ось мій поточний улюблений стек, який використовую щодня.
-                    </p>
-
                     <div className="mt-8 grid grid-cols-1 gap-6 md:grid-cols-3">
                         {Object.entries(skills).map(([category, items]) => (
                             <div key={category} className="card">

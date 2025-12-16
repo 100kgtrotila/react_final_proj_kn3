@@ -51,23 +51,18 @@ const TodoPage: React.FC = () => {
                 <svg className="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                 </svg>
-                Назад до Labs
+                Back to Labs
             </Link>
 
-            <div className="mb-8 flex items-center gap-4">
-                <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-green-500 to-emerald-500 text-3xl">
-                    ✅
-                </div>
-                <div>
-                    <h1 className="heading-lg">Todo List Application</h1>
-                    <p className="text-muted">Redux State Management & CRUD операції</p>
-                </div>
+            <div className="mb-8">
+                <h1 className="heading-lg">Todo List Application</h1>
+                <p className="text-muted">Redux State Management & CRUD Operations</p>
             </div>
 
             {allTodos.length === 0 && (
                 <div className="card mb-8 border-blue-200 bg-blue-50 dark:border-blue-900 dark:bg-blue-900/20">
                     <p className="text-blue-700 dark:text-blue-300">
-                        👋 Welcome! Start by adding your first task below.
+                        Get started by adding a task below.
                     </p>
                 </div>
             )}
