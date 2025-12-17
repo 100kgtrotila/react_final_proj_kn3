@@ -1,19 +1,20 @@
-import React, { useMemo, useCallback } from 'react'
+import React, { useCallback } from 'react'
 import { Link } from 'react-router-dom'
-import { useAppSelector, useAppDispatch } from '../app/hooks'
+import { useAppDispatch } from '../app/hooks'
 import { toggleTodo, deleteTodo, editTodo } from '../features/todos/todosSlice'
+import { useTodos } from '../features/todos/useTodos'
 import TodoList from '../features/todos/TodoList'
 import TodoForm from '../features/todos/TodoForm'
 import Pagination from '../features/todos/Pagination'
 import Search from '../features/todos/Search'
 import TodoStats from '../features/todos/TodoStats'
+import { Button } from '../components/ui/button'
+import { ChevronLeft } from 'lucide-react'
+import { Alert, AlertDescription } from '../components/ui/alert'
 
 const TodoPage: React.FC = () => {
     const dispatch = useAppDispatch()
-    const allTodos = useAppSelector(state => state.todos.items)
-    const searchTerm = useAppSelector(state => state.todos.searchTerm)
-    const currentPage = useAppSelector(state => state.todos.currentPage)
-    const limitPerPage = useAppSelector(state => state.todos.limitPerPage)
+    const { paginatedTodos, filteredCount, allTodosCount } = useTodos()
 
     const handleToggle = useCallback((id: number) => {
         dispatch(toggleTodo(id))
@@ -27,74 +28,56 @@ const TodoPage: React.FC = () => {
         dispatch(editTodo({ id, text }))
     }, [dispatch])
 
-    const filteredTodos = useMemo(() => {
-        if (!searchTerm.trim()) {
-            return allTodos
-        }
-        return allTodos.filter(todo =>
-            todo.text.toLowerCase().includes(searchTerm.toLowerCase())
-        )
-    }, [allTodos, searchTerm])
-
-    const paginatedTodos = useMemo(() => {
-        const startIndex = (currentPage - 1) * limitPerPage
-        const endIndex = startIndex + limitPerPage
-        return filteredTodos.slice(startIndex, endIndex)
-    }, [filteredTodos, currentPage, limitPerPage])
-
     return (
-        <main className="container-custom pt-24 pb-16">
-            <Link
-                to="/labs"
-                className="mb-8 inline-flex items-center text-sm text-slate-600 transition-colors hover:text-slate-900 dark:text-neutral-400 dark:hover:text-neutral-200"
-            >
-                <svg className="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                Back to Labs
-            </Link>
+        <div className="space-y-8 max-w-4xl mx-auto">
+            <Button variant="ghost" asChild className="pl-0 hover:bg-transparent hover:text-primary">
+                <Link to="/labs">
+                    <ChevronLeft className="mr-2 h-4 w-4" />
+                    Back to Labs
+                </Link>
+            </Button>
 
-            <div className="mb-8">
-                <h1 className="heading-lg">Todo List Application</h1>
-                <p className="text-muted">Redux State Management & CRUD Operations</p>
+            <div className="space-y-2">
+                <h1 className="text-3xl font-bold tracking-tight">Todo List Application</h1>
+                <p className="text-muted-foreground">
+                    Advanced state management with Redux Toolkit, LocalStorage persistence, and CRUD operations.
+                </p>
             </div>
 
-            {allTodos.length === 0 && (
-                <div className="card mb-8 border-blue-200 bg-blue-50 dark:border-blue-900 dark:bg-blue-900/20">
-                    <p className="text-blue-700 dark:text-blue-300">
-                        Get started by adding a task below.
-                    </p>
-                </div>
+            {allTodosCount === 0 && (
+                <Alert className="bg-blue-50/50 text-blue-900 border-blue-200 dark:bg-blue-900/20 dark:text-blue-200 dark:border-blue-900">
+                    <AlertDescription>
+                        Your list is empty! Get started by adding a new task below.
+                    </AlertDescription>
+                </Alert>
             )}
 
-            {allTodos.length > 0 && (
-                <>
-                    <TodoStats />
-                    <div className="mt-8">
-                        <Search />
+            <div className="space-y-6">
+                {allTodosCount > 0 && (
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                        <TodoStats />
+                        <div className="w-full sm:w-72">
+                            <Search />
+                        </div>
                     </div>
-                </>
-            )}
+                )}
 
-            <div className="mt-8">
                 <TodoForm />
-            </div>
 
-            <div className="mt-8">
                 <TodoList
                     todos={paginatedTodos}
                     onToggle={handleToggle}
                     onDelete={handleDelete}
                     onEdit={handleEdit}
                 />
-            </div>
 
-            {filteredTodos.length > 0 && (
-                <div className="mt-8">
-                    <Pagination totalTodos={filteredTodos.length} />
-                </div>
-            )}
-        </main>
+                {filteredCount > 0 && (
+                    <div className="pt-4 border-t">
+                        <Pagination totalTodos={filteredCount} />
+                    </div>
+                )}
+            </div>
+        </div>
     )
 }
 

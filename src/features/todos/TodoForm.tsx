@@ -1,6 +1,9 @@
 import React, { useState } from 'react'
 import { useAppDispatch } from '../../app/hooks'
 import { addTodo } from './todosSlice'
+import { Button } from '../../components/ui/button'
+import { Input } from '../../components/ui/input'
+import { PlusCircle } from 'lucide-react'
 
 const TodoForm: React.FC = () => {
     const [inputText, setInputText] = useState('')
@@ -15,20 +18,18 @@ const TodoForm: React.FC = () => {
     }
 
     return (
-        <form onSubmit={handleSubmit} className="flex gap-3">
-            <input
+        <form onSubmit={handleSubmit} className="flex w-full items-center gap-4">
+            <Input
                 type="text"
                 value={inputText}
                 onChange={(e) => setInputText(e.target.value)}
-                placeholder="Add a new task..."
-                className="flex-1 rounded-xl border-2 border-slate-300 bg-white px-4 py-3 transition-all focus:border-slate-500 focus:outline-none focus:ring-4 focus:ring-slate-500/20 dark:border-neutral-700 dark:bg-neutral-900"
+                placeholder="What needs to be done?"
+                className="h-12 text-base"
             />
-            <button
-                type="submit"
-                className="btn btn-primary whitespace-nowrap px-8"
-            >
-                Add Task
-            </button>
+            <Button type="submit" size="lg" className="h-12 gap-2">
+                <PlusCircle className="h-5 w-5" />
+                Add
+            </Button>
         </form>
     )
 }

@@ -1,5 +1,9 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../components/ui/card'
+import { Badge } from '../components/ui/badge'
+import { ChevronLeft, Check, Atom } from 'lucide-react'
+import { Button } from '../components/ui/button'
 
 const Lab1: React.FC = () => {
     const features = [
@@ -11,68 +15,60 @@ const Lab1: React.FC = () => {
     ]
 
     return (
-        <main className="container-custom pt-24 pb-16">
-            <Link
-                to="/labs"
-                className="mb-8 inline-flex items-center text-sm text-slate-600 transition-colors hover:text-slate-900 dark:text-neutral-400 dark:hover:text-neutral-200"
-            >
-                <svg className="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                Назад до Labs
-            </Link>
+        <div className="space-y-8">
+            <Button variant="ghost" asChild className="pl-0 hover:bg-transparent hover:text-primary">
+                <Link to="/labs">
+                    <ChevronLeft className="mr-2 h-4 w-4" />
+                    Back to Labs
+                </Link>
+            </Button>
 
-            <div className="card mb-8">
-                <div className="mb-6 flex items-center gap-4">
-                    <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 text-3xl">
-                        ⚛️
+            <Card>
+                <CardHeader className="flex flex-row items-center gap-4 space-y-0 pb-6">
+                    <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-500 to-cyan-500 text-white shadow-lg">
+                        <Atom className="h-8 w-8" />
                     </div>
                     <div>
-                        <h1 className="heading-lg">Лабораторна робота №1</h1>
-                        <p className="text-muted">Розгортання React проєкту</p>
+                        <CardTitle className="text-2xl font-bold">Laboratory Work №1</CardTitle>
+                        <CardDescription className="text-lg">React Project Setup & Architecture</CardDescription>
                     </div>
-                </div>
+                </CardHeader>
 
-                <div className="space-y-6">
-                    <div>
-                        <h2 className="heading-md mb-3">Опис</h2>
-                        <p className="text-muted leading-relaxed">
-                            Перша лабораторна робота присвячена розгортанню сучасного React проєкту
-                            з використанням найкращих практик 2025 року. Проєкт включає налаштування
-                            інструментів розробки, систему збірки та базову структуру файлів.
+                <CardContent className="space-y-8">
+                    <div className="space-y-4">
+                        <h3 className="text-xl font-semibold tracking-tight">Description</h3>
+                        <p className="text-muted-foreground leading-relaxed text-lg">
+                            The first laboratory work focuses on deploying a modern React project using
+                            best practices of 2025. The project includes development tools setup,
+                            build system configuration, and a scalable Feature-Sliced Design file structure.
                         </p>
                     </div>
 
-                    <div>
-                        <h2 className="heading-md mb-3">Реалізовані можливості</h2>
-                        <ul className="space-y-2">
+                    <div className="space-y-4">
+                        <h3 className="text-xl font-semibold tracking-tight">Implemented Features</h3>
+                        <ul className="grid gap-3 sm:grid-cols-2">
                             {features.map((feature, index) => (
-                                <li key={index} className="flex items-start gap-3">
-                                    <svg className="mt-1 h-5 w-5 flex-shrink-0 text-green-600 dark:text-green-400" fill="currentColor" viewBox="0 0 20 20">
-                                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                                    </svg>
-                                    <span className="text-slate-700 dark:text-neutral-300">{feature}</span>
+                                <li key={index} className="flex items-center gap-3 rounded-lg border p-3 text-sm text-muted-foreground shadow-sm">
+                                    <Check className="h-5 w-5 text-green-500" />
+                                    {feature}
                                 </li>
                             ))}
                         </ul>
                     </div>
 
-                    <div>
-                        <h2 className="heading-md mb-3">Використані технології</h2>
+                    <div className="space-y-4">
+                        <h3 className="text-xl font-semibold tracking-tight">Technologies Used</h3>
                         <div className="flex flex-wrap gap-2">
                             {['React 18', 'TypeScript', 'Vite', 'Tailwind CSS', 'React Router'].map((tech) => (
-                                <span
-                                    key={tech}
-                                    className="rounded-lg bg-slate-100 px-3 py-1 text-sm font-medium text-slate-700 dark:bg-neutral-800 dark:text-neutral-300"
-                                >
-                  {tech}
-                </span>
+                                <Badge key={tech} variant="secondary" className="px-3 py-1 text-sm">
+                                    {tech}
+                                </Badge>
                             ))}
                         </div>
                     </div>
-                </div>
-            </div>
-        </main>
+                </CardContent>
+            </Card>
+        </div>
     )
 }
 

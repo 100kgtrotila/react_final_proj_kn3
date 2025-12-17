@@ -24,24 +24,20 @@ const todosSlice = createSlice({
                 createdAt: new Date().toISOString(),
             }
             state.items.unshift(newTodo)
-            safeLocalStorage.setItem('todos', JSON.stringify(state.items))
         },
         toggleTodo: (state, action: PayloadAction<number>) => {
             const todo = state.items.find(t => t.id === action.payload)
             if (todo) {
                 todo.completed = !todo.completed
-                safeLocalStorage.setItem('todos', JSON.stringify(state.items))
             }
         },
         deleteTodo: (state, action: PayloadAction<number>) => {
             state.items = state.items.filter(t => t.id !== action.payload)
-            safeLocalStorage.setItem('todos', JSON.stringify(state.items))
         },
         editTodo: (state, action: PayloadAction<{ id: number; text: string }>) => {
             const todo = state.items.find(t => t.id === action.payload.id)
             if (todo) {
                 todo.text = action.payload.text
-                safeLocalStorage.setItem('todos', JSON.stringify(state.items))
             }
         },
         setCurrentPage: (state, action: PayloadAction<number>) => {

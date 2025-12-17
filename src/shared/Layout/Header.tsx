@@ -1,93 +1,64 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { useAppDispatch, useAppSelector } from '../../app/hooks'
-import { toggleTheme } from '../../features/theme/themeSlice'
+import { useAppDispatch } from '../../app/hooks'
+import { setTheme } from '../../features/theme/themeSlice'
+import { Button } from '../../components/ui/button'
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+} from "../../components/ui/dropdown-menu"
+import { Moon, Sun } from "lucide-react"
 
 const Header: React.FC = () => {
     const location = useLocation()
     const dispatch = useAppDispatch()
-    const mode = useAppSelector((state) => state.theme.mode)
-
-    useEffect(() => {
-        const root = document.documentElement
-        if (mode === 'dark') {
-            root.classList.add('dark')
-        } else {
-            root.classList.remove('dark')
-        }
-        localStorage.setItem('theme', mode)
-    }, [mode])
-
     const navLinks = [
         { path: '/', label: 'Home' },
         { path: '/labs', label: 'Labs' },
     ]
 
     return (
-        <header
-            id="site-header"
-            className="fixed inset-x-0 top-0 z-50 border-b border-neutral-200 bg-[#f5f5f5]/80 backdrop-blur transition-all dark:border-neutral-800 dark:bg-neutral-950/80"
-        >
-            <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-5 sm:px-8 md:px-10">
-                <Link
-                    to="/"
-                    className="font-grotesk text-xl tracking-tight text-neutral-900 dark:text-neutral-100"
-                >
-                    Danylo Marynych
+        <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+            <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
+                <Link to="/" className="flex items-center gap-2 font-bold text-xl tracking-tight">
+                    <span className="bg-gradient-to-br from-primary to-primary/60 bg-clip-text text-transparent">
+                        DM
+                    </span>
+                    <span className="hidden sm:inline-block text-foreground">Portfolio</span>
                 </Link>
 
-                <nav className="flex items-center gap-6 font-grotesk text-sm uppercase text-neutral-600 dark:text-neutral-400">
+                <nav className="flex items-center gap-6">
                     {navLinks.map((link) => (
                         <Link
                             key={link.path}
                             to={link.path}
-                            className={`transition-colors hover:text-neutral-900 dark:hover:text-neutral-200 ${
-                                location.pathname === link.path ? 'text-neutral-900 dark:text-neutral-200' : ''
+                            className={`text-sm font-medium transition-colors hover:text-primary ${
+                                location.pathname === link.path ? 'text-foreground' : 'text-muted-foreground'
                             }`}
                         >
                             {link.label}
                         </Link>
                     ))}
 
-                    <button
-                        onClick={() => dispatch(toggleTheme())}
-                        className="group relative inline-flex h-10 w-10 items-center justify-center rounded-md border border-neutral-300 bg-white text-neutral-700 transition-colors hover:border-neutral-400 hover:bg-neutral-50 dark:border-neutral-700 dark:bg-neutral-900 dark:text-neutral-300 dark:hover:border-neutral-600 dark:hover:bg-neutral-800"
-                        aria-label="Toggle theme"
-                    >
-                        <svg
-                            className={`absolute h-5 w-5 transition-all duration-300 ${
-                                mode === 'dark' ? 'scale-0 opacity-0 rotate-90' : 'scale-100 opacity-100 rotate-0'
-                            }`}
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"
-                            />
-                        </svg>
-
-                        <svg
-                            className={`absolute h-5 w-5 transition-all duration-300 ${
-                                mode === 'dark' ? 'scale-100 opacity-100 rotate-0' : 'scale-0 opacity-0 -rotate-90'
-                            }`}
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg"
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                strokeWidth={2}
-                                d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"
-                            />
-                        </svg>
-                    </button>
+                    <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                            <Button variant="outline" size="icon" className="h-9 w-9 border-muted-foreground/20">
+                                <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+                                <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+                                <span className="sr-only">Toggle theme</span>
+                            </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                            <DropdownMenuItem onClick={() => dispatch(setTheme('light'))}>
+                                <Sun className="mr-2 h-4 w-4" /> Light
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={() => dispatch(setTheme('dark'))}>
+                                <Moon className="mr-2 h-4 w-4" /> Dark
+                            </DropdownMenuItem>
+                        </DropdownMenuContent>
+                    </DropdownMenu>
                 </nav>
             </div>
         </header>

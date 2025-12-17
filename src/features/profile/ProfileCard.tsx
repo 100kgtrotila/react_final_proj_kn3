@@ -1,30 +1,32 @@
 import React from 'react'
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '../../components/ui/card'
+import { Button } from '../../components/ui/button'
 
 interface ProfileCardProps {
     name: string
     role: string
     avatarUrl: string
-    bgColor: 'bg-black' | 'bg-white'
+    bgColor: string
 }
 
 const ProfileCard: React.FC<ProfileCardProps> = ({ name, role, avatarUrl }) => {
     return (
-        <div className="card overflow-hidden">
-            <img
-                src={avatarUrl}
-                alt={name}
-                className="h-48 w-full object-cover"
-            />
-            <div className="p-6">
-                <h3 className="text-xl font-semibold text-slate-900 dark:text-neutral-100">
-                    {name}
-                </h3>
-                <p className="text-muted mt-2">{role}</p>
-                <button className="btn btn-primary mt-4 w-full">
-                    View Profile
-                </button>
+        <Card className="overflow-hidden hover:shadow-lg transition-all duration-300">
+            <div className="aspect-square w-full overflow-hidden bg-muted/20">
+                <img
+                    src={avatarUrl}
+                    alt={name}
+                    className="h-full w-full object-cover transition-transform duration-300 hover:scale-105"
+                />
             </div>
-        </div>
+            <CardHeader>
+                <CardTitle className="text-xl">{name}</CardTitle>
+                <CardDescription>{role}</CardDescription>
+            </CardHeader>
+            <CardContent>
+                <Button className="w-full">View Profile</Button>
+            </CardContent>
+        </Card>
     )
 }
 

@@ -12,7 +12,7 @@ interface TodoListProps {
 const TodoList: React.FC<TodoListProps> = ({ todos, onToggle, onDelete, onEdit }) => {
     if (todos.length === 0) {
         return (
-            <div className="card text-center">
+            <div className="rounded-lg border border-dashed p-8 text-center text-muted-foreground">
                 <p className="text-muted">No tasks yet. Add one!</p>
             </div>
         )
