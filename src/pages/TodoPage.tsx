@@ -20,6 +20,9 @@ const TodoPage: React.FC = () => {
     const deleteTodo = useAppStore((state) => state.deleteTodo)
     const editTodo = useAppStore((state) => state.editTodo)
 
+    const limitPerPage = useAppStore((state) => state.limitPerPage)
+    const setLimitPerPage = useAppStore((state) => state.setLimitPerPage)
+
     useEffect(() => {
         fetchTodos()
     }, [fetchTodos])
@@ -57,10 +60,22 @@ const TodoPage: React.FC = () => {
 
             <div className="space-y-6">
                 {allTodosCount > 0 && (
-                    <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                        <TodoStats />
-                        <div className="w-full sm:w-72">
-                            <Search />
+                    <div className="flex flex-col gap-4">
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+                            <TodoStats />
+                            <div className="flex items-center gap-2 w-full sm:w-auto">
+                                <Search />
+                                {/* Селект для вибору кількості */}
+                                <select
+                                    className="h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
+                                    value={limitPerPage}
+                                    onChange={(e) => setLimitPerPage(Number(e.target.value))}
+                                >
+                                    <option value={5}>5 per page</option>
+                                    <option value={10}>10 per page</option>
+                                    <option value={20}>20 per page</option>
+                                </select>
+                            </div>
                         </div>
                     </div>
                 )}

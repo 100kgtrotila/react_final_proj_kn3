@@ -1,8 +1,28 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
-import { TodosState, ApiTodo } from '../types'
+import { Todo, Theme } from '@/types'
 
-export const useAppStore = create<TodosState>()(
+interface AppState {
+    todos: Todo[]
+    status: 'idle' | 'loading' | 'succeeded' | 'failed'
+    error: string | null
+    currentPage: number
+    limitPerPage: number
+    searchTerm: string
+    theme: Theme
+
+    addTodo: (text: string) => void
+    toggleTodo: (id: number) => void
+    deleteTodo: (id: number) => void
+    editTodo: (id: number, text: string) => void
+    setPage: (page: number) => void
+    setSearch: (term: string) => void
+    setLimitPerPage: (limit: number) => void
+    toggleTheme: () => void
+    fetchTodos: () => Promise<void>
+}
+
+export const useAppStore = create<AppState>()(
     persist(
         (set, get) => ({
             todos: [],
@@ -42,9 +62,15 @@ export const useAppStore = create<TodosState>()(
 
             setSearch: (term) => set({ searchTerm: term, currentPage: 1 }),
 
+            setLimitPerPage: (limit) => set({ limitPerPage: limit, currentPage: 1 }),
+
             toggleTheme: () => {
                 const { theme } = get()
-                set({ theme: theme === 'light' ? 'dark' : 'light' })
+                const newTheme = theme === 'light' ? 'dark' : 'light'
+                const root = window.document.documentElement
+                root.classList.remove('light', 'dark')
+                root.classList.add(newTheme)
+                set({ theme: newTheme })
             },
 
             fetchTodos: async () => {
@@ -57,7 +83,7 @@ export const useAppStore = create<TodosState>()(
                     if (!response.ok) throw new Error('Server Error')
                     const data = await response.json()
 
-                    const apiTodos = data.todos.map((t: ApiTodo) => ({
+                    const apiTodos = data.todos.map((t: any) => ({
                         id: t.id,
                         text: t.todo,
                         completed: t.completed,
@@ -73,6 +99,13 @@ export const useAppStore = create<TodosState>()(
         {
             name: 'app-storage',
             storage: createJSONStorage(() => localStorage),
+            onRehydrateStorage: () => (state) => {
+                if (state) {
+                    const root = window.document.documentElement
+                    root.classList.remove('light', 'dark')
+                    root.classList.add(state.theme)
+                }
+            }
         }
     )
 )
