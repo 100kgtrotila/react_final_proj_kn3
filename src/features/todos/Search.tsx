@@ -1,22 +1,21 @@
 import React from 'react'
-import { useAppDispatch, useAppSelector } from '../../app/hooks'
-import { setSearchTerm } from './todosSlice'
+import { useAppStore } from '@/app/store.ts'
 import { Input } from '../../components/ui/input'
 import { Search as SearchIcon } from 'lucide-react'
 
 const Search: React.FC = () => {
-    const dispatch = useAppDispatch()
-    const searchTerm = useAppSelector(state => state.todos.searchTerm)
+    const searchTerm = useAppStore((state) => state.searchTerm)
+    const setSearch = useAppStore((state) => state.setSearch)
 
     return (
         <div className="relative">
-            <SearchIcon className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <SearchIcon className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
                 type="text"
-                value={searchTerm}
-                onChange={(e) => dispatch(setSearchTerm(e.target.value))}
                 placeholder="Search tasks..."
-                className="pl-10"
+                className="pl-9"
+                value={searchTerm}
+                onChange={(e) => setSearch(e.target.value)}
             />
         </div>
     )

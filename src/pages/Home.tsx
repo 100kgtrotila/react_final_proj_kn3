@@ -5,7 +5,6 @@ import { MapPin, GraduationCap, Code2, Database, Gamepad2 } from 'lucide-react'
 const Home: React.FC = () => {
     return (
         <div className="space-y-12">
-            {/* Hero Section */}
             <section className="space-y-6">
                 <h1 className="text-4xl font-extrabold tracking-tight lg:text-5xl">
                     About me
@@ -46,7 +45,6 @@ const Home: React.FC = () => {
                 </div>
             </section>
 
-            {/* Skills Section */}
             <section>
                 <h2 className="text-3xl font-bold mb-8">Tech Stack</h2>
                 <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
@@ -59,7 +57,7 @@ const Home: React.FC = () => {
                         <CardContent>
                             <ul className="list-disc list-inside space-y-2 text-muted-foreground">
                                 <li>React, TypeScript</li>
-                                <li>Redux Toolkit</li>
+                                <li>Zustand State Management</li>
                                 <li>Tailwind CSS</li>
                                 <li>Vite</li>
                             </ul>

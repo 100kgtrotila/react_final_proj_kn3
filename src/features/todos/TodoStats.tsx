@@ -1,9 +1,9 @@
 import React, { useMemo } from 'react'
-import { useAppSelector } from '../../app/hooks'
+import { useAppStore } from '@/app/store.ts'
 import { Badge } from '../../components/ui/badge'
 
 const TodoStats: React.FC = () => {
-    const allTodos = useAppSelector((state) => state.todos.items)
+    const allTodos = useAppStore((state) => state.todos)
 
     const stats = useMemo(() => ({
         total: allTodos.length,

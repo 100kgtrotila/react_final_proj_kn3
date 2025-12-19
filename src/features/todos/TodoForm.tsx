@@ -1,18 +1,18 @@
 import React, { useState } from 'react'
-import { useAppDispatch } from '../../app/hooks'
-import { addTodo } from './todosSlice'
+import { useAppStore } from '../../app/store' // Імпортуємо наш Zustand стор
 import { Button } from '../../components/ui/button'
 import { Input } from '../../components/ui/input'
 import { PlusCircle } from 'lucide-react'
 
 const TodoForm: React.FC = () => {
     const [inputText, setInputText] = useState('')
-    const dispatch = useAppDispatch()
+
+    const addTodo = useAppStore((state) => state.addTodo)
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault()
         if (inputText.trim()) {
-            dispatch(addTodo(inputText))
+            addTodo(inputText)
             setInputText('')
         }
     }

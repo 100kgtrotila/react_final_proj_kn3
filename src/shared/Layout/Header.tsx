@@ -1,66 +1,78 @@
-import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
-import { useAppDispatch } from '../../app/hooks'
-import { setTheme } from '../../features/theme/themeSlice'
+import { useAppStore } from '@/app/store.ts'
 import { Button } from '../../components/ui/button'
-import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuTrigger,
-} from "../../components/ui/dropdown-menu"
-import { Moon, Sun } from "lucide-react"
+import { Moon, Sun, Menu, X } from 'lucide-react'
+import { useState } from 'react'
 
-const Header: React.FC = () => {
+const Header = () => {
+    const theme = useAppStore((state) => state.theme)
+    const toggleTheme = useAppStore((state) => state.toggleTheme)
+    const [isMenuOpen, setIsMenuOpen] = useState(false)
     const location = useLocation()
-    const dispatch = useAppDispatch()
-    const navLinks = [
-        { path: '/', label: 'Home' },
-        { path: '/labs', label: 'Labs' },
+
+    const navItems = [
+        { name: 'Home', path: '/' },
+        { name: 'Labs', path: '/labs' },
     ]
 
     return (
         <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-            <div className="mx-auto flex h-16 max-w-5xl items-center justify-between px-6">
-                <Link to="/" className="flex items-center gap-2 font-bold text-xl tracking-tight">
-                    <span className="bg-gradient-to-br from-primary to-primary/60 bg-clip-text text-transparent">
-                        DM
-                    </span>
-                    <span className="hidden sm:inline-block text-foreground">Portfolio</span>
-                </Link>
+            <div className="container flex h-14 items-center justify-between">
+                <div className="flex items-center gap-6">
+                    <Link to="/" className="flex items-center space-x-2 font-bold text-xl">
+                        <span>Portfolio</span>
+                    </Link>
+                    <nav className="hidden md:flex items-center gap-6 text-sm font-medium">
+                        {navItems.map((item) => (
+                            <Link
+                                key={item.path}
+                                to={item.path}
+                                className={`transition-colors hover:text-foreground/80 ${
+                                    location.pathname === item.path ? 'text-foreground' : 'text-foreground/60'
+                                }`}
+                            >
+                                {item.name}
+                            </Link>
+                        ))}
+                    </nav>
+                </div>
 
-                <nav className="flex items-center gap-6">
-                    {navLinks.map((link) => (
-                        <Link
-                            key={link.path}
-                            to={link.path}
-                            className={`text-sm font-medium transition-colors hover:text-primary ${
-                                location.pathname === link.path ? 'text-foreground' : 'text-muted-foreground'
-                            }`}
-                        >
-                            {link.label}
-                        </Link>
-                    ))}
+                <div className="flex items-center gap-2">
+                    <Button variant="ghost" size="icon" onClick={toggleTheme}>
+                        {theme === 'dark' ? (
+                            <Sun className="h-5 w-5" />
+                        ) : (
+                            <Moon className="h-5 w-5" />
+                        )}
+                    </Button>
 
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="outline" size="icon" className="h-9 w-9 border-muted-foreground/20">
-                                <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-                                <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
-                                <span className="sr-only">Toggle theme</span>
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent align="end">
-                            <DropdownMenuItem onClick={() => dispatch(setTheme('light'))}>
-                                <Sun className="mr-2 h-4 w-4" /> Light
-                            </DropdownMenuItem>
-                            <DropdownMenuItem onClick={() => dispatch(setTheme('dark'))}>
-                                <Moon className="mr-2 h-4 w-4" /> Dark
-                            </DropdownMenuItem>
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                </nav>
+                    <Button
+                        variant="ghost"
+                        size="icon"
+                        className="md:hidden"
+                        onClick={() => setIsMenuOpen(!isMenuOpen)}
+                    >
+                        {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+                    </Button>
+                </div>
             </div>
+
+            {isMenuOpen && (
+                <div className="md:hidden border-t p-4 bg-background">
+                    <nav className="flex flex-col gap-4">
+                        {navItems.map((item) => (
+                            <Link
+                                key={item.path}
+                                to={item.path}
+                                onClick={() => setIsMenuOpen(false)}
+                                className="text-sm font-medium"
+                            >
+                                {item.name}
+                            </Link>
+                        ))}
+                    </nav>
+                </div>
+            )}
         </header>
     )
 }
