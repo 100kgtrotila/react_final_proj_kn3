@@ -1,6 +1,8 @@
 import { create } from 'zustand'
 import { persist, createJSONStorage } from 'zustand/middleware'
 import { Todo, Theme } from '@/types'
+import { todoApi } from '@/features/todos/api'
+import { DEFAULT_PAGE_LIMIT } from '@/shared/constants'
 
 interface AppState {
     todos: Todo[]
@@ -29,7 +31,7 @@ export const useAppStore = create<AppState>()(
             status: 'idle',
             error: null,
             currentPage: 1,
-            limitPerPage: 5,
+            limitPerPage: DEFAULT_PAGE_LIMIT,
             searchTerm: '',
             theme: 'dark',
 
@@ -66,11 +68,7 @@ export const useAppStore = create<AppState>()(
 
             toggleTheme: () => {
                 const { theme } = get()
-                const newTheme = theme === 'light' ? 'dark' : 'light'
-                const root = window.document.documentElement
-                root.classList.remove('light', 'dark')
-                root.classList.add(newTheme)
-                set({ theme: newTheme })
+                set({ theme: theme === 'light' ? 'dark' : 'light' })
             },
 
             fetchTodos: async () => {
@@ -79,33 +77,16 @@ export const useAppStore = create<AppState>()(
 
                 set({ status: 'loading' })
                 try {
-                    const response = await fetch('https://dummyjson.com/todos?limit=5')
-                    if (!response.ok) throw new Error('Server Error')
-                    const data = await response.json()
-
-                    const apiTodos = data.todos.map((t: any) => ({
-                        id: t.id,
-                        text: t.todo,
-                        completed: t.completed,
-                        createdAt: new Date().toISOString()
-                    }))
-
+                    const apiTodos = await todoApi.fetchTodos()
                     set({ status: 'succeeded', todos: apiTodos })
                 } catch (error) {
-                    set({ status: 'failed', error: 'Failed to fetch' })
+                    set({ status: 'failed', error: 'Failed to fetch tasks' })
                 }
             }
         }),
         {
             name: 'app-storage',
             storage: createJSONStorage(() => localStorage),
-            onRehydrateStorage: () => (state) => {
-                if (state) {
-                    const root = window.document.documentElement
-                    root.classList.remove('light', 'dark')
-                    root.classList.add(state.theme)
-                }
-            }
         }
     )
 )

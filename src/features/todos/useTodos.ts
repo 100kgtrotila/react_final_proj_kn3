@@ -1,5 +1,5 @@
 import { useMemo } from 'react'
-import { useAppStore } from '../../app/store'
+import { useAppStore } from '@/app/store.ts'
 
 export const useTodos = () => {
     const todos = useAppStore((state) => state.todos)

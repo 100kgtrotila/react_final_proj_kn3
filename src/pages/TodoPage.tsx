@@ -10,6 +10,7 @@ import TodoStats from '../features/todos/TodoStats'
 import { Button } from '../components/ui/button'
 import { ChevronLeft, Loader2 } from 'lucide-react'
 import { Alert, AlertDescription } from '../components/ui/alert'
+import { PAGINATION_LIMITS } from '@/shared/constants'
 
 const TodoPage: React.FC = () => {
     const { paginatedTodos, filteredCount, allTodosCount } = useTodos()
@@ -65,15 +66,16 @@ const TodoPage: React.FC = () => {
                             <TodoStats />
                             <div className="flex items-center gap-2 w-full sm:w-auto">
                                 <Search />
-                                {/* Селект для вибору кількості */}
                                 <select
                                     className="h-10 rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2"
                                     value={limitPerPage}
                                     onChange={(e) => setLimitPerPage(Number(e.target.value))}
                                 >
-                                    <option value={5}>5 per page</option>
-                                    <option value={10}>10 per page</option>
-                                    <option value={20}>20 per page</option>
+                                    {PAGINATION_LIMITS.map(limit => (
+                                        <option key={limit} value={limit}>
+                                            {limit} per page
+                                        </option>
+                                    ))}
                                 </select>
                             </div>
                         </div>
